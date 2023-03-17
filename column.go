@@ -11,7 +11,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/bsshin71/alticli/api"
+	"github.com/bulenttokuzlu/alticli/api"
 )
 
 type BufferLen api.SQLLEN

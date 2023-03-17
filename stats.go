@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/bsshin71/alticli/api"
+	"github.com/bulenttokuzlu/alticli/api"
 )
 
 type Stats struct {

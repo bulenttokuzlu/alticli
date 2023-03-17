@@ -3,12 +3,11 @@
 // license that can be found in the LICENSE file.
 
 // Package odbc implements database/sql driver to access data via odbc interface.
-//
 package alticli
 
 import (
 	"database/sql"
-	"github.com/bsshin71/alticli/api"
+	"github.com/bulenttokuzlu/alticli/api"
 )
 
 var drv Driver

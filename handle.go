@@ -6,7 +6,7 @@ package alticli
 
 import (
 	"fmt"
-	"github.com/bsshin71/alticli/api"
+	"github.com/bulenttokuzlu/alticli/api"
 )
 
 func ToHandleAndType(handle interface{}) (h api.SQLHANDLE, ht api.SQLSMALLINT, err error) {

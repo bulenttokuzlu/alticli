@@ -8,7 +8,7 @@ import (
 	"database/sql/driver"
 	"errors"
 
-	"github.com/bsshin71/alticli/api"
+	"github.com/bulenttokuzlu/alticli/api"
 )
 
 type Tx struct {

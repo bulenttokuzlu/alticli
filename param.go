@@ -7,7 +7,7 @@ package alticli
 import (
 	"database/sql/driver"
 	"fmt"
-	"github.com/bsshin71/alticli/api"
+	"github.com/bulenttokuzlu/alticli/api"
 	"time"
 	"unsafe"
 )
