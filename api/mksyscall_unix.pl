@@ -121,9 +121,9 @@ package $package
 
 import "unsafe"
 
-// #cgo darwin LDFLAGS: -L/home/altibase/altibase_home/lib  -lodbccli -ldl -lpthread -lcrypt -lrt -lstdc++ -lm
-// #cgo darwin CFLAGS: -I/home/altibase/altibase_home/include
-// #cgo linux LDFLAGS: -L/home/altibase/altibase_home/lib -lodbccli -ldl -lpthread -lcrypt -lrt -lstdc++ -lm
+// #cgo darwin LDFLAGS: -L/opt/altibase-client-7.1.0/lib  -lodbccli -ldl -lpthread -lcrypt -lrt -lstdc++ -lm
+// #cgo darwin CFLAGS: -I/opt/altibase-client-7.1.0/include
+// #cgo linux LDFLAGS: -L/opt/altibase-client-7.1.0/lib -lodbccli -ldl -lpthread -lcrypt -lrt -lstdc++ -lm
 // #include <sqlcli.h>
 import "C"
 
