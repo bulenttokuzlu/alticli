@@ -8,10 +8,10 @@
 
 package api
 
-// #cgo darwin LDFLAGS: -L/opt/altibase-client-7.1.0/lib  -lodbccli -ldl
+// #cgo darwin LDFLAGS: -L$ALTIBASE_HOME/lib  -lalticapi -lodbccli -ldl
 // -lpthread -lcrypt -lrt -lstdc++ -lm
-// #cgo darwin CFLAGS: -I/opt/altibase-client-7.1.0/include
-// #cgo linux LDFLAGS: -L/opt/altibase-client-7.1.0/lib -lodbccli -ldl
+// #cgo darwin CFLAGS: -I$ALTIBASE_HOME/include
+// #cgo linux LDFLAGS: -L$ALTIBASE_HOME/lib -lalticapi -lodbccli -ldl
 // -lpthread -lcrypt -lrt -lstdc++ -lm
 
 // #include <sqlcli.h>
