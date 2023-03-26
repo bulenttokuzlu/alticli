@@ -6,6 +6,7 @@ package alticli
 
 import (
 	"database/sql/driver"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"sync"
@@ -29,6 +30,8 @@ func (c *Conn) Prepare(query string) (driver.Stmt, error) {
 	if err != nil {
 		return nil, err
 	}
+	stmtJson, _ := json.Marshal(&Stmt{c: c, os: os, query: query})
+	fmt.Println("stmtJson = ", stmtJson)
 	return &Stmt{c: c, os: os, query: query}, nil
 }
 

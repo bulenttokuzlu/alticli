@@ -51,6 +51,12 @@ func (c *Conn) PrepareODBCStmt(query string) (*ODBCStmt, error) {
 		defer releaseHandle(h)
 		return nil, err
 	}
+	stmtJson, _ := json.Marshal(&ODBCStmt{
+		h:          h,
+		Parameters: ps,
+		usedByStmt: true,
+	})
+	fmt.Println("stmtJson = ", stmtJson)
 	return &ODBCStmt{
 		h:          h,
 		Parameters: ps,
