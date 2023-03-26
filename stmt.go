@@ -31,13 +31,10 @@ func (c *Conn) Prepare(query string) (driver.Stmt, error) {
 }
 
 func (s *Stmt) NumInput() int {
-	/*if s.os == nil {
+	if s.os == nil {
 		return -1
 	}
-	return len(s.os.Parameters)*/
-	// böyle salak bir hata veriyordu.
-	//	2023/03/26 11:02:40 /user/pc-fusion-data-extractor/model/qJobRequest_run.go:30 sql: expected 0 arguments, got 1
-	return -1
+	return len(s.os.Parameters)
 }
 
 func (s *Stmt) Close() error {
