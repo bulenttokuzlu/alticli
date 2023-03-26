@@ -106,7 +106,7 @@ func SQLNumResultCols(statementHandle SQLHSTMT, columnCountPtr *SQLSMALLINT) (re
 func SQLPrepare(statementHandle SQLHSTMT, statementText *SQLWCHAR, textLength SQLINTEGER) (ret SQLRETURN) {
 
 	//--------
-	str, _ := json.Marshal(&statementHandle)
+	str, _ := json.Marshal(statementHandle)
 	fmt.Println("statementHandle = ", string(str))
 	str, _ = json.Marshal(&statementText)
 	fmt.Println("statementText = ", string(str))

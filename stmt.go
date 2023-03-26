@@ -53,10 +53,11 @@ func (c *Conn) Prepare(query string) (driver.Stmt, error) {
 
 func (s *Stmt) NumInput() int {
 	fmt.Println("-------------------------NumInput------------------------------")
-	if s.os == nil {
+	return -1
+	/*if s.os == nil {
 		return -1
 	}
-	return len(s.os.Parameters)
+	return len(s.os.Parameters)*/
 }
 
 func (s *Stmt) Close() error {

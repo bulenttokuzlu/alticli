@@ -129,17 +129,19 @@ var testingIssue5 bool // used during tests
 
 func (s *ODBCStmt) Exec(args []driver.Value) error {
 	fmt.Println("-------------------------Exec------------------------------")
-	if len(args) != len(s.Parameters) {
-		return fmt.Errorf("wrong number of arguments %d, %d expected", len(args), len(s.Parameters))
-	}
-	for i, a := range args {
-		// this could be done in 2 steps:
-		// 1) bind vars right after prepare;
-		// 2) set their (vars) values here;
-		// but rebinding parameters for every new parameter value
-		// should be efficient enough for our purpose.
-		if err := s.Parameters[i].BindValue(s.h, i, a); err != nil {
-			return err
+	//if len(args) != len(s.Parameters) {
+	//	return fmt.Errorf("wrong number of arguments %d, %d expected", len(args), len(s.Parameters))
+	//}
+	if len(args) == len(s.Parameters) {
+		for i, a := range args {
+			// this could be done in 2 steps:
+			// 1) bind vars right after prepare;
+			// 2) set their (vars) values here;
+			// but rebinding parameters for every new parameter value
+			// should be efficient enough for our purpose.
+			if err := s.Parameters[i].BindValue(s.h, i, a); err != nil {
+				return err
+			}
 		}
 	}
 	if testingIssue5 {
