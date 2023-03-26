@@ -28,6 +28,7 @@ type ODBCStmt struct {
 }
 
 func (c *Conn) PrepareODBCStmt(query string) (*ODBCStmt, error) {
+	fmt.Println("-------------------------PrepareODBCStmt------------------------------")
 	var out api.SQLHANDLE
 	ret := api.SQLAllocHandle(api.SQL_HANDLE_STMT, api.SQLHANDLE(c.h), &out)
 	if IsError(ret) {
@@ -58,6 +59,7 @@ func (c *Conn) PrepareODBCStmt(query string) (*ODBCStmt, error) {
 }
 
 func (s *ODBCStmt) closeByStmt() error {
+	fmt.Println("-------------------------closeByStmt------------------------------")
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if s.usedByStmt {
@@ -70,6 +72,7 @@ func (s *ODBCStmt) closeByStmt() error {
 }
 
 func (s *ODBCStmt) closeByRows() error {
+	fmt.Println("-------------------------closeByRows------------------------------")
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if s.usedByRows {
@@ -88,6 +91,7 @@ func (s *ODBCStmt) closeByRows() error {
 }
 
 func (s *ODBCStmt) releaseHandle() error {
+	fmt.Println("-------------------------releaseHandle------------------------------")
 	h := s.h
 	s.h = api.SQLHSTMT(api.SQL_NULL_HSTMT)
 	return releaseHandle(h)
@@ -96,6 +100,7 @@ func (s *ODBCStmt) releaseHandle() error {
 var testingIssue5 bool // used during tests
 
 func (s *ODBCStmt) Exec(args []driver.Value) error {
+	fmt.Println("-------------------------Exec------------------------------")
 	if len(args) != len(s.Parameters) {
 		return fmt.Errorf("wrong number of arguments %d, %d expected", len(args), len(s.Parameters))
 	}
@@ -128,6 +133,7 @@ func (s *ODBCStmt) Exec(args []driver.Value) error {
 }
 
 func (s *ODBCStmt) BindColumns() error {
+	fmt.Println("-------------------------BindColumns------------------------------")
 	// count columns
 	var n api.SQLSMALLINT
 	ret := api.SQLNumResultCols(s.h, &n)

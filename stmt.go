@@ -7,6 +7,7 @@ package alticli
 import (
 	"database/sql/driver"
 	"errors"
+	"fmt"
 	"sync"
 
 	"github.com/bulenttokuzlu/alticli/api"
@@ -20,6 +21,7 @@ type Stmt struct {
 }
 
 func (c *Conn) Prepare(query string) (driver.Stmt, error) {
+	fmt.Println("-------------------------Prepare------------------------------")
 	if c.bad {
 		return nil, driver.ErrBadConn
 	}
@@ -31,6 +33,7 @@ func (c *Conn) Prepare(query string) (driver.Stmt, error) {
 }
 
 func (s *Stmt) NumInput() int {
+	fmt.Println("-------------------------NumInput------------------------------")
 	if s.os == nil {
 		return -1
 	}
@@ -38,6 +41,7 @@ func (s *Stmt) NumInput() int {
 }
 
 func (s *Stmt) Close() error {
+	fmt.Println("-------------------------Close------------------------------")
 	if s.os == nil {
 		return errors.New("Stmt is already closed")
 	}
@@ -47,6 +51,7 @@ func (s *Stmt) Close() error {
 }
 
 func (s *Stmt) Exec(args []driver.Value) (driver.Result, error) {
+	fmt.Println("-------------------------Exec------------------------------")
 	if s.os == nil {
 		return nil, errors.New("Stmt is closed")
 	}
@@ -74,6 +79,7 @@ func (s *Stmt) Exec(args []driver.Value) (driver.Result, error) {
 }
 
 func (s *Stmt) Query(args []driver.Value) (driver.Rows, error) {
+	fmt.Println("-------------------------Query------------------------------")
 	if s.os == nil {
 		return nil, errors.New("Stmt is closed")
 	}
