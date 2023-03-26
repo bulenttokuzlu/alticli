@@ -6,6 +6,7 @@ package alticli
 
 import (
 	"database/sql/driver"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/bulenttokuzlu/alticli/api"
@@ -111,6 +112,10 @@ func (s *ODBCStmt) Exec(args []driver.Value) error {
 	if testingIssue5 {
 		time.Sleep(10 * time.Microsecond)
 	}
+
+	stmtJson, _ := json.Marshal(&s)
+	fmt.Println("stmtJson = ", stmtJson)
+
 	ret := api.SQLExecute(s.h)
 	if ret == api.SQL_NO_DATA {
 		// success but no data to report
