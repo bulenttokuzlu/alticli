@@ -86,6 +86,8 @@ const (
 	SQL_GUID            = C.SQL_GUID
 	SQL_SIGNED_OFFSET   = C.SQL_SIGNED_OFFSET
 	SQL_UNSIGNED_OFFSET = C.SQL_UNSIGNED_OFFSET
+	SQL_CLOB            = C.SQL_CLOB
+	SQL_BLOB            = C.SQL_BLOB
 
 	// TODO(lukemauldin): Not defined in sqlext.h. Using windows value, but it is not supported.
 	SQL_SS_XML   = -152
