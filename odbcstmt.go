@@ -146,8 +146,10 @@ func (s *ODBCStmt) Exec(args []driver.Value) error {
 		time.Sleep(10 * time.Microsecond)
 	}
 
+	//-----------------
 	stmtJson, _ := json.Marshal(&s)
-	fmt.Println("stmtJson = ", stmtJson)
+	fmt.Println("stmtJson = ", string(stmtJson))
+	//-----------------
 
 	ret := api.SQLExecute(s.h)
 	if ret == api.SQL_NO_DATA {
