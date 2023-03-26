@@ -12,6 +12,7 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
 	"unsafe"
 )
@@ -103,9 +104,19 @@ func SQLNumResultCols(statementHandle SQLHSTMT, columnCountPtr *SQLSMALLINT) (re
 }
 
 func SQLPrepare(statementHandle SQLHSTMT, statementText *SQLWCHAR, textLength SQLINTEGER) (ret SQLRETURN) {
+
+	//--------
+	str, _ := json.Marshal(&statementHandle)
+	fmt.Println("statementHandle = ", string(str))
+	str, _ = json.Marshal(&statementText)
+	fmt.Println("statementText = ", string(str))
+	str, _ = json.Marshal(&textLength)
+	fmt.Println("textLength = ", string(str))
 	fmt.Printf("SQLPrepare - statementHandle = %v\n", statementHandle)
 	fmt.Printf("SQLPrepare - statementText = %v\n", statementText)
 	fmt.Printf("SQLPrepare - textLength = %v\n", textLength)
+	//--------
+
 	r := C.SQLPrepareW(C.SQLHSTMT(statementHandle), (*C.SQLWCHAR)(unsafe.Pointer(statementText)), C.SQLINTEGER(textLength))
 	return SQLRETURN(r)
 }
