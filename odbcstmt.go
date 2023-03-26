@@ -56,7 +56,7 @@ func (c *Conn) PrepareODBCStmt(query string) (*ODBCStmt, error) {
 		Parameters: ps,
 		usedByStmt: true,
 	})
-	fmt.Println("stmtJson = ", stmtJson)
+	fmt.Println("stmtJson = ", string(stmtJson))
 	return &ODBCStmt{
 		h:          h,
 		Parameters: ps,

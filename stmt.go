@@ -22,7 +22,7 @@ type Stmt struct {
 }
 
 func (c *Conn) Prepare(query string) (driver.Stmt, error) {
-	fmt.Println("-------------------------Prepare------------------------------")
+	fmt.Println("-------------------------Prepare------------------------------", query)
 	if c.bad {
 		return nil, driver.ErrBadConn
 	}
@@ -31,7 +31,7 @@ func (c *Conn) Prepare(query string) (driver.Stmt, error) {
 		return nil, err
 	}
 	stmtJson, _ := json.Marshal(&Stmt{c: c, os: os, query: query})
-	fmt.Println("stmtJson = ", stmtJson)
+	fmt.Println("stmtJson = ", string(stmtJson))
 	return &Stmt{c: c, os: os, query: query}, nil
 }
 
