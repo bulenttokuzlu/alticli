@@ -29,12 +29,30 @@ type ODBCStmt struct {
 
 func (c *Conn) PrepareODBCStmt(query string) (*ODBCStmt, error) {
 	fmt.Println("-------------------------PrepareODBCStmt------------------------------")
+
+	//--------
+	connJson, _ := json.Marshal(c)
+	fmt.Println("connJson = ", string(connJson))
+	//--------
+
 	var out api.SQLHANDLE
 	ret := api.SQLAllocHandle(api.SQL_HANDLE_STMT, api.SQLHANDLE(c.h), &out)
+
+	//--------
+	outJson, _ := json.Marshal(&out)
+	fmt.Println("connJson = ", string(outJson))
+	//--------
+
 	if IsError(ret) {
 		return nil, c.newError("SQLAllocHandle", c.h)
 	}
 	h := api.SQLHSTMT(out)
+
+	//--------
+	hJson, _ := json.Marshal(&h)
+	fmt.Println("hJson = ", string(hJson))
+	//--------
+
 	err := drv.Stats.updateHandleCount(api.SQL_HANDLE_STMT, 1)
 	if err != nil {
 		return nil, err
@@ -51,12 +69,16 @@ func (c *Conn) PrepareODBCStmt(query string) (*ODBCStmt, error) {
 		defer releaseHandle(h)
 		return nil, err
 	}
+
+	//--------
 	stmtJson, _ := json.Marshal(&ODBCStmt{
 		h:          h,
 		Parameters: ps,
 		usedByStmt: true,
 	})
 	fmt.Println("stmtJson = ", string(stmtJson))
+	//--------
+
 	return &ODBCStmt{
 		h:          h,
 		Parameters: ps,

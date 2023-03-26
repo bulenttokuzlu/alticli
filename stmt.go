@@ -23,15 +23,31 @@ type Stmt struct {
 
 func (c *Conn) Prepare(query string) (driver.Stmt, error) {
 	fmt.Println("-------------------------Prepare------------------------------", query)
+
+	//--------
+	connJson, _ := json.Marshal(c)
+	fmt.Println("connJson = ", string(connJson))
+	//--------
+
 	if c.bad {
 		return nil, driver.ErrBadConn
 	}
 	os, err := c.PrepareODBCStmt(query)
+
+	//--------
+	osJson, _ := json.Marshal(os)
+	fmt.Println("osJson = ", string(osJson))
+	//--------
+
 	if err != nil {
 		return nil, err
 	}
+
+	//--------
 	stmtJson, _ := json.Marshal(&Stmt{c: c, os: os, query: query})
 	fmt.Println("stmtJson = ", string(stmtJson))
+	//--------
+
 	return &Stmt{c: c, os: os, query: query}, nil
 }
 
