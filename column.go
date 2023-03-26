@@ -95,15 +95,11 @@ func NewColumn(h api.SQLHSTMT, idx int) (Column, error) {
 		return NewVariableWidthColumn(b, api.SQL_C_WCHAR, size)
 	case api.SQL_BINARY, api.SQL_VARBINARY:
 		return NewVariableWidthColumn(b, api.SQL_C_BINARY, size)
-	case api.SQL_LONGVARCHAR:
+	case api.SQL_LONGVARCHAR, api.SQL_CLOB:
 		return NewVariableWidthColumn(b, api.SQL_C_CHAR, 0)
 	case api.SQL_WLONGVARCHAR, api.SQL_SS_XML:
 		return NewVariableWidthColumn(b, api.SQL_C_WCHAR, 0)
-	case api.SQL_LONGVARBINARY:
-		return NewVariableWidthColumn(b, api.SQL_C_BINARY, 0)
-	case api.SQL_CLOB:
-		return NewVariableWidthColumn(b, api.SQL_C_CHAR, 0)
-	case api.SQL_BLOB:
+	case api.SQL_LONGVARBINARY, api.SQL_BLOB:
 		return NewVariableWidthColumn(b, api.SQL_C_BINARY, 0)
 	default:
 		return nil, fmt.Errorf("unsupported column type %d", sqltype)
