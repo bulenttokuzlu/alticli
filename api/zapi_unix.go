@@ -11,7 +11,10 @@
 
 package api
 
-import "unsafe"
+import (
+	"fmt"
+	"unsafe"
+)
 
 // #cgo darwin LDFLAGS: -L$ALTIBASE_HOME/lib  -lalticapi -lodbccli -ldl -lpthread -lcrypt -lrt -lstdc++ -lm
 // #cgo darwin CFLAGS: -I$ALTIBASE_HOME/include
@@ -100,6 +103,9 @@ func SQLNumResultCols(statementHandle SQLHSTMT, columnCountPtr *SQLSMALLINT) (re
 }
 
 func SQLPrepare(statementHandle SQLHSTMT, statementText *SQLWCHAR, textLength SQLINTEGER) (ret SQLRETURN) {
+	fmt.Printf("SQLPrepare - statementHandle = %v\n", statementHandle)
+	fmt.Printf("SQLPrepare - statementText = %v\n", statementText)
+	fmt.Printf("SQLPrepare - textLength = %v\n", textLength)
 	r := C.SQLPrepareW(C.SQLHSTMT(statementHandle), (*C.SQLWCHAR)(unsafe.Pointer(statementText)), C.SQLINTEGER(textLength))
 	return SQLRETURN(r)
 }
