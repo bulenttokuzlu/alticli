@@ -8,6 +8,7 @@ import (
 	"database/sql/driver"
 	"errors"
 	"fmt"
+	"math"
 	"time"
 	"unsafe"
 
@@ -129,6 +130,9 @@ func (c *BaseColumn) Value(buf []byte) (driver.Value, error) {
 	case api.SQL_C_SBIGINT:
 		return *((*int64)(p)), nil
 	case api.SQL_C_DOUBLE:
+		if *((*float64)(p)) == math.Round(*((*float64)(p))) {
+			return *((*int64)(p)), nil
+		}
 		return *((*float64)(p)), nil
 	case api.SQL_C_CHAR:
 		return buf, nil
