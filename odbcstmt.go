@@ -7,6 +7,7 @@ package alticli
 import (
 	"database/sql/driver"
 	"errors"
+	"fmt"
 	"github.com/bulenttokuzlu/alticli/api"
 	"sync"
 	"time"
@@ -38,6 +39,8 @@ func (c *Conn) PrepareODBCStmt(query string) (*ODBCStmt, error) {
 	}
 
 	b := api.StringToUTF16(query)
+	fmt.Printf("query=%v\n", query)
+	fmt.Printf("api.StringToUTF16(query)=%v\n", (*api.SQLWCHAR)(unsafe.Pointer(&b[0])))
 	ret = api.SQLPrepare(h, (*api.SQLWCHAR)(unsafe.Pointer(&b[0])), api.SQL_NTS)
 	if IsError(ret) {
 		defer releaseHandle(h)
