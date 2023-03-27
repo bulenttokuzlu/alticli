@@ -131,7 +131,7 @@ func (c *BaseColumn) Value(buf []byte) (driver.Value, error) {
 		return *((*int64)(p)), nil
 	case api.SQL_C_DOUBLE:
 		if *((*float64)(p)) == math.Round(*((*float64)(p))) {
-			return *((*int64)(p)), nil
+			return int64(*((*float64)(p))), nil
 		}
 		return *((*float64)(p)), nil
 	case api.SQL_C_CHAR:
