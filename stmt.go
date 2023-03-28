@@ -7,7 +7,6 @@ package alticli
 import (
 	"database/sql/driver"
 	"errors"
-	"fmt"
 	"sync"
 
 	"github.com/bulenttokuzlu/alticli/api"
@@ -21,7 +20,6 @@ type Stmt struct {
 }
 
 func (c *Conn) Prepare(query string) (driver.Stmt, error) {
-	fmt.Println(query)
 	if c.bad {
 		return nil, driver.ErrBadConn
 	}
