@@ -135,6 +135,7 @@ func (c *BaseColumn) Value(buf []byte) (driver.Value, error) {
 		}
 		return *((*float64)(p)), nil
 	case api.SQL_C_CHAR:
+		fmt.Println(string(buf))
 		return buf, nil
 	case api.SQL_C_WCHAR:
 		if p == nil {
