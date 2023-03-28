@@ -6,7 +6,9 @@ package alticli
 
 import (
 	"database/sql/driver"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/bulenttokuzlu/alticli/api"
 	"sync"
 	"time"
@@ -26,12 +28,31 @@ type ODBCStmt struct {
 }
 
 func (c *Conn) PrepareODBCStmt(query string) (*ODBCStmt, error) {
+	fmt.Println("-------------------------PrepareODBCStmt------------------------------")
+
+	//--------
+	connJson, _ := json.Marshal(c)
+	fmt.Println("connJson = ", string(connJson))
+	//--------
+
 	var out api.SQLHANDLE
 	ret := api.SQLAllocHandle(api.SQL_HANDLE_STMT, api.SQLHANDLE(c.h), &out)
+
+	//--------
+	outJson, _ := json.Marshal(&out)
+	fmt.Println("connJson = ", string(outJson))
+	//--------
+
 	if IsError(ret) {
 		return nil, c.newError("SQLAllocHandle", c.h)
 	}
 	h := api.SQLHSTMT(out)
+
+	//--------
+	hJson, _ := json.Marshal(&h)
+	fmt.Println("hJson = ", string(hJson))
+	//--------
+
 	err := drv.Stats.updateHandleCount(api.SQL_HANDLE_STMT, 1)
 	if err != nil {
 		return nil, err
@@ -48,6 +69,16 @@ func (c *Conn) PrepareODBCStmt(query string) (*ODBCStmt, error) {
 		defer releaseHandle(h)
 		return nil, err
 	}
+
+	//--------
+	stmtJson, _ := json.Marshal(&ODBCStmt{
+		h:          h,
+		Parameters: ps,
+		usedByStmt: true,
+	})
+	fmt.Println("stmtJson = ", string(stmtJson))
+	//--------
+
 	return &ODBCStmt{
 		h:          h,
 		Parameters: ps,
@@ -56,6 +87,7 @@ func (c *Conn) PrepareODBCStmt(query string) (*ODBCStmt, error) {
 }
 
 func (s *ODBCStmt) closeByStmt() error {
+	fmt.Println("-------------------------closeByStmt------------------------------")
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if s.usedByStmt {
@@ -68,6 +100,7 @@ func (s *ODBCStmt) closeByStmt() error {
 }
 
 func (s *ODBCStmt) closeByRows() error {
+	fmt.Println("-------------------------closeByRows------------------------------")
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if s.usedByRows {
@@ -86,6 +119,7 @@ func (s *ODBCStmt) closeByRows() error {
 }
 
 func (s *ODBCStmt) releaseHandle() error {
+	fmt.Println("-------------------------releaseHandle------------------------------")
 	h := s.h
 	s.h = api.SQLHSTMT(api.SQL_NULL_HSTMT)
 	return releaseHandle(h)
@@ -94,6 +128,7 @@ func (s *ODBCStmt) releaseHandle() error {
 var testingIssue5 bool // used during tests
 
 func (s *ODBCStmt) Exec(args []driver.Value) error {
+	fmt.Println("-------------------------Exec------------------------------")
 	//if len(args) != len(s.Parameters) {
 	//	return fmt.Errorf("wrong number of arguments %d, %d expected", len(args), len(s.Parameters))
 	//}
@@ -112,6 +147,12 @@ func (s *ODBCStmt) Exec(args []driver.Value) error {
 	if testingIssue5 {
 		time.Sleep(10 * time.Microsecond)
 	}
+
+	//-----------------
+	stmtJson, _ := json.Marshal(&s)
+	fmt.Println("stmtJson = ", string(stmtJson))
+	//-----------------
+
 	ret := api.SQLExecute(s.h)
 	if ret == api.SQL_NO_DATA {
 		// success but no data to report
@@ -124,6 +165,7 @@ func (s *ODBCStmt) Exec(args []driver.Value) error {
 }
 
 func (s *ODBCStmt) BindColumns() error {
+	fmt.Println("-------------------------BindColumns------------------------------")
 	// count columns
 	var n api.SQLSMALLINT
 	ret := api.SQLNumResultCols(s.h, &n)

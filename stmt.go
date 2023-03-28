@@ -6,7 +6,9 @@ package alticli
 
 import (
 	"database/sql/driver"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"sync"
 
 	"github.com/bulenttokuzlu/alticli/api"
@@ -20,17 +22,37 @@ type Stmt struct {
 }
 
 func (c *Conn) Prepare(query string) (driver.Stmt, error) {
+	fmt.Println("-------------------------Prepare------------------------------", query)
+
+	//--------
+	connJson, _ := json.Marshal(c)
+	fmt.Println("connJson = ", string(connJson))
+	//--------
+
 	if c.bad {
 		return nil, driver.ErrBadConn
 	}
 	os, err := c.PrepareODBCStmt(query)
+
+	//--------
+	osJson, _ := json.Marshal(os)
+	fmt.Println("osJson = ", string(osJson))
+	//--------
+
 	if err != nil {
 		return nil, err
 	}
+
+	//--------
+	stmtJson, _ := json.Marshal(&Stmt{c: c, os: os, query: query})
+	fmt.Println("stmtJson = ", string(stmtJson))
+	//--------
+
 	return &Stmt{c: c, os: os, query: query}, nil
 }
 
 func (s *Stmt) NumInput() int {
+	fmt.Println("-------------------------NumInput------------------------------")
 	return -1
 	/*if s.os == nil {
 		return -1
@@ -39,6 +61,7 @@ func (s *Stmt) NumInput() int {
 }
 
 func (s *Stmt) Close() error {
+	fmt.Println("-------------------------Close------------------------------")
 	if s.os == nil {
 		return errors.New("Stmt is already closed")
 	}
@@ -48,6 +71,7 @@ func (s *Stmt) Close() error {
 }
 
 func (s *Stmt) Exec(args []driver.Value) (driver.Result, error) {
+	fmt.Println("-------------------------Exec------------------------------")
 	if s.os == nil {
 		return nil, errors.New("Stmt is closed")
 	}
@@ -75,6 +99,7 @@ func (s *Stmt) Exec(args []driver.Value) (driver.Result, error) {
 }
 
 func (s *Stmt) Query(args []driver.Value) (driver.Rows, error) {
+	fmt.Println("-------------------------Query------------------------------")
 	if s.os == nil {
 		return nil, errors.New("Stmt is closed")
 	}
